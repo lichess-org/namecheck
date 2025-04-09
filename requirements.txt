@@ -1,3 +1,5 @@
+faker
+importlib-metadata
 wordllama
 zulip
-jupyter-notebook
+zulip_bots
