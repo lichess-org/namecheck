@@ -1,6 +1,7 @@
 # Username similarity
 
-A repo to check if a given username if similar to a username already discussed on zulip.
+A bot to check if a given username is similar to a username already discussed on zulip.
+
 This uses word llama embeddings.
 
 ## Local Development
@@ -29,15 +30,10 @@ docker build -t zulipbot .
 ```
 
 ```bash
-docker run -it --rm \
-    -v ~/Downloads/zuliprc:/zuliprc \
-    -e ZULIPRC=/zuliprc \
-    zulipbot
+docker run -it --rm -v ~/Downloads/zuliprc:/zuliprc zulipbot
 
 ## to test on a local zulip server, you can set a custom stream ID
-docker run -it --rm \
-    -v ~/Downloads/zuliprc:/zuliprc \
-    -e ZULIPRC=/zuliprc \
-    -e USERNAME_STREAM=4 \
+docker run -it --rm -v ~/Downloads/zuliprc:/zuliprc \
+    -e USERNAME_STREAM=usernames \
     zulipbot
 ```

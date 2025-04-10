@@ -11,7 +11,8 @@ topic_prefix = r"^/|^✔ /"
 def get_usernames() -> list[str]:
     if zuliprc():
         client = zulip.Client(config_file=zuliprc())
-        result = client.get_stream_topics(username_stream())
+        stream_id = client.get_stream_id(username_stream())["stream_id"]
+        result = client.get_stream_topics(stream_id)
         username_topics = [uname["name"] for uname in result["topics"] if re.match(topic_prefix, uname["name"])]
     else:
         fake = Faker()
