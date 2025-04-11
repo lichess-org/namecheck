@@ -14,7 +14,7 @@ class NameCheckHandler:
     def usage(self) -> str:
         commit_url = f"https://github.com/lichess-org/namecheck/commit/{version()}"
         return f"""
-Usage: `@NameCheck /<username> <optional limit>`
+Usage: `@NameCheck <search> <optional limit>`
 
 Version: [{version()}]({commit_url}) {last_commit()}
         """
@@ -27,7 +27,7 @@ Version: [{version()}]({commit_url}) {last_commit()}
 
         args: list[str] = message['content'].split(" ")
 
-        if not args or not args[0].startswith("/"):
+        if not args or args[0] == "help":
             bot_handler.send_reply(message, self.usage())
             return
 

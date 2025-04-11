@@ -18,7 +18,7 @@ pip install -r requirements.txt
 zulip-bot-shell namecheck.py
 
 # > Enter your message:
-# try "/jones" or "/smith 3"
+# try "jones" or "smith 3"
 ```
 
 ## Docker
