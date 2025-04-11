@@ -8,12 +8,17 @@ from config import username_stream, zuliprc
 
 topic_prefix = r"^/|^✔ /"
 
+
 def get_usernames() -> list[str]:
     if zuliprc():
         client = zulip.Client(config_file=zuliprc())
         stream_id = client.get_stream_id(username_stream())["stream_id"]
         result = client.get_stream_topics(stream_id)
-        username_topics = [uname["name"] for uname in result["topics"] if re.match(topic_prefix, uname["name"])]
+        username_topics = [
+            uname["name"]
+            for uname in result["topics"]
+            if re.match(topic_prefix, uname["name"])
+        ]
     else:
         fake = Faker()
         username_topics = [f"/{fake.name()}" for _ in range(1000)]

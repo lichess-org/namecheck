@@ -2,7 +2,7 @@ import os
 
 
 def username_stream():
-    return os.getenv("USERNAME_STREAM", 'mod-usernames')
+    return os.getenv("USERNAME_STREAM", "mod-usernames")
 
 
 def zuliprc():
