@@ -7,7 +7,7 @@ from similar import find_most_similar_already_discussed
 
 def format_results(results: list[str]) -> str:
     channel = username_stream()
-    return ", ".join(f"#**{channel}>{result}**" for result in results)
+    return "\n".join(f"#**{channel}>{result}**" for result in results)
 
 
 class NameCheckHandler:
