@@ -14,7 +14,7 @@ class NameCheckHandler:
     def usage(self) -> str:
         commit_url = f"https://github.com/lichess-org/namecheck/commit/{version()}"
         return f"""
-Usage: `@NameCheck <search> <optional limit>`
+Usage: `@NameCheck <search> <optional limit> <exact>`
 
 Version: [{version()}]({commit_url}) {last_commit()}
         """
@@ -27,12 +27,26 @@ Version: [{version()}]({commit_url}) {last_commit()}
 
         args: list[str] = message["content"].split(" ")
 
-        if not args or args[0] == "help":
+        if not args or args[0] in ["help", ""]:
             bot_handler.send_reply(message, self.usage())
             return
 
+        try:
+            exact_index = args[1:].index("exact") + 1
+            exact = True
+            args.pop(exact_index)
+        except ValueError:
+            exact = False
+
+        n_similar = 10
+        if len(args) > 1:
+            try:
+                n_similar = int(args[1])
+            except ValueError:
+                pass
+
         results = find_most_similar_already_discussed(
-            args[0], int(args[1]) if len(args) > 1 else 10
+            args[0], n_similar, exact=exact
         )
         bot_handler.send_reply(
             message, f"{len(results)} most similar:\n" + format_results(results)

@@ -25,7 +25,12 @@ def get_usernames() -> list[str]:
     return username_topics
 
 
-def find_most_similar_already_discussed(name_in_question: str, limit: int) -> list[str]:
-    usernames = get_usernames()
+def find_most_similar_already_discussed(name_in_question: str, limit: int, exact=False) -> list[str]:
+    usernames = [name for name in get_usernames() if name != name_in_question]
+    if exact:
+        usernames = [name for name in usernames if name_in_question.lower() in name.lower()]
     wl = WordLlama.load()
+    if len(usernames) <= limit:
+        # might happen if looking for exact matches.
+        return usernames
     return wl.topk(name_in_question, usernames, k=limit)
