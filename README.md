@@ -7,9 +7,7 @@ This uses word llama embeddings.
 ## Local Development
 
 ```bash
-virtualenv venv
-source venv/bin/activate
-pip install -r requirements.txt
+devenv shell
 ```
 
 ### Test messages + responses using the bot emulator
