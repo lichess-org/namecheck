@@ -1,5 +1,6 @@
 from faker import Faker
 import re
+import wordninja
 from wordllama import WordLlama
 import zulip
 
@@ -21,16 +22,26 @@ def get_usernames() -> list[str]:
         ]
     else:
         fake = Faker()
-        username_topics = [f"/{fake.name()}" for _ in range(1000)]
+        username_topics = [f"/{fake.user_name()}" for _ in range(1000)]
+        username_topics += [f"✔ /{fake.user_name()}" for _ in range(1000)]
     return username_topics
+
+
+def segment(name: str) -> str:
+    return " ".join(wordninja.split(name))
 
 
 def find_most_similar_already_discussed(name_in_question: str, limit: int, exact=False) -> list[str]:
     usernames = [name for name in get_usernames() if name != name_in_question]
     if exact:
         usernames = [name for name in usernames if name_in_question.lower() in name.lower()]
-    wl = WordLlama.load()
     if len(usernames) <= limit:
         # might happen if looking for exact matches.
         return usernames
-    return wl.topk(name_in_question, usernames, k=limit)
+
+    wl = WordLlama.load()
+    query_embedding = wl.embed(segment(name_in_question))
+    doc_embeddings = wl.embed([segment(name) for name in usernames])
+    scores = wl.vector_similarity(query_embedding[0], doc_embeddings).squeeze()
+    ranked = sorted(zip(usernames, scores.tolist()), key=lambda pair: pair[1], reverse=True)
+    return [name for name, _score in ranked[:limit]]

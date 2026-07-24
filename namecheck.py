@@ -1,5 +1,5 @@
 from typing import Any, Dict
-from zulip_bots.lib import BotHandler
+from zulip_bots.lib import AbstractBotHandler
 
 from config import last_commit, username_stream, version, zuliprc
 from similar import find_most_similar_already_discussed
@@ -19,7 +19,7 @@ Usage: `@NameCheck <search> <optional limit> <exact>`
 Version: [{version()}]({commit_url}) {last_commit()}
         """
 
-    def handle_message(self, message: Dict[str, Any], bot_handler: BotHandler) -> None:
+    def handle_message(self, message: Dict[str, Any], bot_handler: AbstractBotHandler) -> None:
         print(message)
         # if zuliprc() and message['stream_id'] != username_stream():
         #     bot_handler.send_reply(message, "This bot only works in the username stream.")

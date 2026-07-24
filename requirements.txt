@@ -1,5 +1,6 @@
 faker
 importlib-metadata
 wordllama
+wordninja
 zulip
 zulip_bots
